@@ -127,7 +127,7 @@ const textoWidth = width - qrSize - qrMargin - 60 // espacio para texto legal a 
 const fontSize = 8
 
 // Generar QR
-const urlVerificacion = `https://tudominio.com/trayecto/${trayecto.id}`
+const urlVerificacion = `https://hrt-xunta.vercel.app/trayecto/${trayecto.id}`
 const qrBase64 = await QRCode.toDataURL(urlVerificacion)
 const qrImage = await pdfDoc.embedPng(Buffer.from(qrBase64.split(",")[1], "base64"))
 
