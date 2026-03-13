@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Vehiculo {
+  id                String     @id @default(uuid())
+  marca             String
+  modelo            String
+  matricula         String
+  tarjetaTransporte String
+  licenciaNumero    String
+  predeterminado    Boolean    @default(false)
+  createdAt         DateTime   @default(now())
+  titularDNI        String
+  titularNombre     String
+  trayectos         Trayecto[]
+}
+
+model Trayecto {
+  id         String    @id @default(uuid())
+  numero     String
+  origen     String
+  destino    String
+  pasajeros  String[]
+  hora       DateTime
+  dateM      DateTime?
+  createdAt  DateTime  @default(now())
+  vehiculoId String
+  vehiculo   Vehiculo  @relation(fields: [vehiculoId], references: [id])
+
+  // NUEVO: contrato predeterminado al crear
+  contratoId String
+  contrato   Contrato  @relation(fields: [contratoId], references: [id])
+}
+
+model Contrato {
+  id                String     @id @default(uuid())
+  lugar             String
+  contratante       String
+  arrendatario      String
+  firmaContratante  String?
+  firmaArrendatario String?
+  logo1             String?
+  logo2             String?
+  valor             Float
+  predeterminado    Boolean    @default(false)
+  createdAt         DateTime   @default(now())
+
+  // NUEVO: relación inversa
+  trayectos         Trayecto[]
+}
