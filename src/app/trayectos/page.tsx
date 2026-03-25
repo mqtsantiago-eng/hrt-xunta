@@ -30,8 +30,8 @@ interface Trayecto {
 
 export default function TrayectosPage() {
   const [trayectos, setTrayectos] = useState<Trayecto[]>([])
-  const [origen, setOrigen] = useState("SANTIAGO DE COMPOSTELA")
-  const [destino, setDestino] = useState("")
+  const [origen, setOrigen] = useState("")
+  const [destino, setDestino] = useState("SANTIAGO DE COMPOSTELA")
   const [pasajeros, setPasajeros] = useState<string[]>([])
   const [nuevoPasajero, setNuevoPasajero] = useState("")
   const [loading, setLoading] = useState(false)
@@ -47,7 +47,7 @@ export default function TrayectosPage() {
 
   useEffect(() => {
     cargarTrayectos()
-    destinoRef.current?.focus()
+    origenRef.current?.focus()
   }, [])
 
   const agregarPasajero = () => {
@@ -103,12 +103,12 @@ export default function TrayectosPage() {
         window.open(url, "_blank")
       }
 
-      setOrigen("SANTIAGO DE COMPOSTELA")
-      setDestino("")
+      setOrigen("")
+      setDestino("SANTIAGO DE COMPOSTELA")
       setPasajeros([])
       setNuevoPasajero("")
 
-      destinoRef.current?.focus()
+      origenRef.current?.focus()
 
       cargarTrayectos()
 
