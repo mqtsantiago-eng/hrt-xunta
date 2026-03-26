@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
+import { formatFecha } from "@/utils/date"
 
 /**
  * Interfaz para representar un contrato.
@@ -176,13 +177,13 @@ export default function TrayectosPage() {
       <h2 className="text-xl font-bold">Trayectos</h2>
 
             <button
-              onClick={guardarTrayecto}
-              disabled={loading}
-              className="btn-primary w-10 h-10 flex items-center justify-center text-lg p-0"
-              title="Guardar trayecto"
-              >
-              💾
-            </button>
+  onClick={guardarTrayecto}
+  disabled={loading}
+  className="btn-primary w-10 h-10 flex items-center justify-center text-xl text-white p-0"
+  title="Guardar trayecto"
+>
+  {loading ? "…" : "✔"}
+</button>
 
     </div>
 
@@ -277,7 +278,39 @@ export default function TrayectosPage() {
       </div>
 
       {/* Tabla de trayectos existentes */}
-      <div className="card overflow-x-auto">
+
+          {/* Vista móvil */}
+<div className="md:hidden space-y-2">
+
+  {trayectos.map(t => (
+    <div key={t.id} className="card p-3 flex justify-between items-center">
+
+      <div>
+        <div className="font-bold text-sm">
+          {t.numero}
+        </div>
+
+        <div className="text-xs text-gray-600">
+          {t.origen} → {t.destino}
+        </div>
+      </div>
+
+      <button
+        onClick={() => abrirPDF(t.id)}
+        className="btn-primary text-xs px-2 py-1"
+      >
+        PDF
+      </button>
+
+    </div>
+  ))}
+
+</div>
+
+
+
+
+      <div className="card overflow-x-auto hidden md:block">
         <table className="table text-sm min-w-full">
           <thead>
             <tr className="border-b">
@@ -302,8 +335,8 @@ export default function TrayectosPage() {
                 <td className="p-2">{t.pasajeros.join(", ")}</td>
                 <td className="p-2">{t.vehiculo.marca} {t.vehiculo.modelo}</td>
                 <td className="p-2">{t.contrato.lugar}</td>
-                <td className="p-2">{new Date(t.hora).toLocaleString()}</td>
-                <td className="p-2">{t.dateM ? new Date(t.dateM).toLocaleString() : ""}</td>
+                <td className="p-2">{formatFecha(t.hora)}</td>
+                <td className="p-2">{formatFecha(t.dateM)}</td>
                 <td className="p-2">
                   <button
                     onClick={() => abrirPDF(t.id)}

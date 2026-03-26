@@ -45,7 +45,7 @@ export default function Home() {
             </Link>
           </Card>
 
-          <Card title="Contratos" icon="🧾" color="bg-purple-100 text-purple-600">
+          <Card title="Empresa" icon="🧾" color="bg-purple-100 text-purple-600">
             <Link href="/admin/contratos">
               <Button className="btn btn-success w-full">
                 Abrir

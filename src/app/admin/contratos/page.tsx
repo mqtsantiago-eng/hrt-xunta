@@ -13,6 +13,7 @@ export default function ContratosAdmin() {
   const [predeterminado, setPredeterminado] = useState(false)
   const [editandoId, setEditandoId] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [mostrarFormulario, setMostrarFormulario] = useState(false)
 
   // Archivos
   const [firmaContratante, setFirmaContratante] = useState<File | null>(null)
@@ -104,14 +105,25 @@ export default function ContratosAdmin() {
     setValor(c.valor)
     setValor2(c.valor2)
     setPredeterminado(c.predeterminado)
+    setMostrarFormulario(true)
   }
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">🧾 Contratos</h1>
 
+      <button
+  onClick={() => setMostrarFormulario(!mostrarFormulario)}
+  className="btn-primary"
+>
+  {mostrarFormulario ? "Cerrar formulario" : "➕ Nuevo contrato"}
+</button>
+
       {/* FORMULARIO */}
-      <div className="card space-y-3">
+      
+{mostrarFormulario && (
+<div className="card space-y-3">
+
         <h2 className="font-bold text-lg">
           {editandoId ? "Editar contrato" : "Crear contrato"}
         </h2>
@@ -137,19 +149,19 @@ export default function ContratosAdmin() {
         {/* Inputs de archivos */}
         <div className="flex flex-col gap-2">
           <label>
-            Firma Contratante:
+            Firma Contratante: 113x113x72
             <input type="file" onChange={e => setFirmaContratante(e.target.files?.[0] ?? null)} />
           </label>
           <label>
-            Firma Arrendatario:
+            Firma Arrendatario: 113x113x72
             <input type="file" onChange={e => setFirmaArrendatario(e.target.files?.[0] ?? null)} />
           </label>
           <label>
-            Logo 1:
+            Cabecera PDF: 567x85x72
             <input type="file" onChange={e => setLogo1(e.target.files?.[0] ?? null)} />
           </label>
           <label>
-            Logo 2:
+            Sub Cabecera PDF: 567x85x72
             <input type="file" onChange={e => setLogo2(e.target.files?.[0] ?? null)} />
           </label>
         </div>
@@ -158,6 +170,7 @@ export default function ContratosAdmin() {
           {loading ? (editandoId ? "Actualizando..." : "Creando...") : editandoId ? "Actualizar contrato" : "Crear contrato"}
         </button>
       </div>
+      )}
 
       {/* LISTA CONTRATOS */}
       <div className="card overflow-x-auto">
