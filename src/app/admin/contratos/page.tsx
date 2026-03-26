@@ -9,6 +9,7 @@ export default function ContratosAdmin() {
   const [contratante, setContratante] = useState("")
   const [arrendatario, setArrendatario] = useState("")
   const [valor, setValor] = useState<number>(0)
+  const [valor2, setValor2] = useState<number>(0)
   const [predeterminado, setPredeterminado] = useState(false)
   const [editandoId, setEditandoId] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -35,6 +36,7 @@ export default function ContratosAdmin() {
     setContratante("")
     setArrendatario("")
     setValor(0)
+    setValor2(0)
     setPredeterminado(false)
     setFirmaContratante(null)
     setFirmaArrendatario(null)
@@ -49,6 +51,7 @@ export default function ContratosAdmin() {
     formData.append("contratante", contratante)
     formData.append("arrendatario", arrendatario)
     formData.append("valor", valor.toString())
+    formData.append("valor2", valor2.toString())
     formData.append("predeterminado", predeterminado ? "true" : "false")
 
     if (firmaContratante) formData.append("firmaContratante", firmaContratante)
@@ -99,6 +102,7 @@ export default function ContratosAdmin() {
     setContratante(c.contratante)
     setArrendatario(c.arrendatario)
     setValor(c.valor)
+    setValor2(c.valor2)
     setPredeterminado(c.predeterminado)
   }
 
@@ -116,6 +120,14 @@ export default function ContratosAdmin() {
         <input className="input" placeholder="Contratante" value={contratante} onChange={e => setContratante(e.target.value)} />
         <input className="input" placeholder="Arrendatario" value={arrendatario} onChange={e => setArrendatario(e.target.value)} />
         <input type="number" className="input" placeholder="Valor" value={valor} onChange={e => setValor(Number(e.target.value))} />
+
+        <input
+          type="number"
+          className="input"
+          placeholder="Valor 2"
+          value={valor2}
+          onChange={e => setValor2(Number(e.target.value))}
+        />
 
         <label className="flex items-center gap-2">
           <input type="checkbox" checked={predeterminado} onChange={e => setPredeterminado(e.target.checked)} />

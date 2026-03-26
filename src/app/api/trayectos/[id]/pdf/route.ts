@@ -84,7 +84,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     // ---------------------
     page.drawText("DATOS DA RUTA CONTRATADA", { x: 50, y, size: 12, font: bold })
     y -= 18
-    const fechaRecogida = new Date(trayecto.hora)
+    const fechaRecogida = new Date(trayecto.dateM2 ?? trayecto.hora)
     const rutaData = [
       `Fecha recollida: ${fechaRecogida.toLocaleDateString()}`,
       `Hora recollida: ${fechaRecogida.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`,

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Contrato" ADD COLUMN     "valor2" DOUBLE PRECISION NOT NULL DEFAULT 0;

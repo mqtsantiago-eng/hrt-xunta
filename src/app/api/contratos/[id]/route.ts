@@ -16,6 +16,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   const contratante = formData.get("contratante") as string
   const arrendatario = formData.get("arrendatario") as string
   const valor = parseFloat(formData.get("valor") as string)
+  const valor2 = parseFloat((formData.get("valor2") as string) || "0")
   const predeterminado = formData.get("predeterminado") === "true"
 
   const firmaContratante = await fileToBase64Node(formData.get("firmaContratante") as Blob | null)
@@ -37,6 +38,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
       contratante,
       arrendatario,
       valor,
+      valor2,
       predeterminado,
       ...(firmaContratante !== null && { firmaContratante }),
       ...(firmaArrendatario !== null && { firmaArrendatario }),

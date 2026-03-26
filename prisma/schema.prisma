@@ -29,6 +29,7 @@ model Trayecto {
   pasajeros  String[]
   hora       DateTime
   dateM      DateTime?
+  dateM2     DateTime?
   createdAt  DateTime  @default(now())
   vehiculoId String
   vehiculo   Vehiculo  @relation(fields: [vehiculoId], references: [id])
@@ -48,6 +49,7 @@ model Contrato {
   logo1             String?
   logo2             String?
   valor             Float
+  valor2            Float @default(0)
   predeterminado    Boolean    @default(false)
   createdAt         DateTime   @default(now())
 

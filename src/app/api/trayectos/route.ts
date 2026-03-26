@@ -45,6 +45,7 @@ export async function POST(req: Request) {
 
     // Calcular dateM: hora actual menos contrato.valor en minutos
     const dateM = new Date(Date.now() - contrato.valor * 60_000)
+    const dateM2 = new Date(Date.now() + contrato.valor2 * 60_000)
 
     // Crear trayecto
     const trayecto = await prisma.trayecto.create({
@@ -55,6 +56,7 @@ export async function POST(req: Request) {
         pasajeros,
         hora: new Date(),
         dateM,
+        dateM2,
         vehiculoId: vehiculo.id,
         contratoId: contrato.id
       },

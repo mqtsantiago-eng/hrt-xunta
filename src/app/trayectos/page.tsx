@@ -2,6 +2,9 @@
 
 import { useEffect, useState, useRef } from "react"
 
+/**
+ * Interfaz para representar un contrato.
+ */
 interface Contrato {
   id: string
   lugar: string
@@ -9,6 +12,9 @@ interface Contrato {
   predeterminado: boolean
 }
 
+/**
+ * Interfaz para representar un vehículo.
+ */
 interface Vehiculo {
   id: string
   marca: string
@@ -16,6 +22,9 @@ interface Vehiculo {
   predeterminado: boolean
 }
 
+/**
+ * Interfaz para representar un trayecto (ruta o viaje).
+ */
 interface Trayecto {
   id: string
   numero: string
@@ -28,17 +37,27 @@ interface Trayecto {
   contrato: Contrato
 }
 
+/**
+ * Página principal para gestionar trayectos.
+ * Permite crear nuevos trayectos con origen, destino y pasajeros,
+ * y muestra una lista de trayectos existentes con opción de generar PDF.
+ */
 export default function TrayectosPage() {
+  // Estados para la lista de trayectos y formulario de creación
   const [trayectos, setTrayectos] = useState<Trayecto[]>([])
-  const [origen, setOrigen] = useState("SANTIAGO DE COMPOSTELA")
-  const [destino, setDestino] = useState("")
+  const [origen, setOrigen] = useState("")
+  const [destino, setDestino] = useState("SANTIAGO DE COMPOSTELA")
   const [pasajeros, setPasajeros] = useState<string[]>([])
   const [nuevoPasajero, setNuevoPasajero] = useState("")
   const [loading, setLoading] = useState(false)
 
+  // Referencias para los inputs
   const destinoRef = useRef<HTMLInputElement>(null)
   const origenRef = useRef<HTMLInputElement>(null)
 
+  /**
+   * Carga la lista de trayectos desde la API.
+   */
   const cargarTrayectos = async () => {
     const res = await fetch("/api/trayectos")
     const data = await res.json()
@@ -47,9 +66,12 @@ export default function TrayectosPage() {
 
   useEffect(() => {
     cargarTrayectos()
-    destinoRef.current?.focus()
+    origenRef.current?.focus()
   }, [])
 
+  /**
+   * Agrega un nuevo pasajero a la lista.
+   */
   const agregarPasajero = () => {
     const nombre = nuevoPasajero.trim().toUpperCase()
 
@@ -64,10 +86,17 @@ export default function TrayectosPage() {
     setNuevoPasajero("")
   }
 
+  /**
+   * Elimina un pasajero de la lista por índice.
+   * @param index - Índice del pasajero a eliminar.
+   */
   const eliminarPasajero = (index: number) => {
     setPasajeros(pasajeros.filter((_, i) => i !== index))
   }
 
+  /**
+   * Guarda un nuevo trayecto enviándolo a la API y genera el PDF automáticamente.
+   */
   const guardarTrayecto = async () => {
     if (!origen || !destino) {
       alert("Debes ingresar origen y destino")
@@ -103,12 +132,12 @@ export default function TrayectosPage() {
         window.open(url, "_blank")
       }
 
-      setOrigen("SANTIAGO DE COMPOSTELA")
-      setDestino("")
+      setOrigen("")
+      setDestino("SANTIAGO DE COMPOSTELA")
       setPasajeros([])
       setNuevoPasajero("")
 
-      destinoRef.current?.focus()
+      origenRef.current?.focus()
 
       cargarTrayectos()
 
@@ -119,6 +148,10 @@ export default function TrayectosPage() {
     }
   }
 
+  /**
+   * Abre el PDF de un trayecto en una nueva ventana.
+   * @param id - ID del trayecto.
+   */
   const abrirPDF = async (id: string) => {
     try {
       const res = await fetch(`/api/trayectos/${id}/pdf`)
@@ -139,9 +172,26 @@ export default function TrayectosPage() {
   return (
     <div className="space-y-6 w-full max-w-screen-lg mx-auto px-4 sm:px-6">
 
+    <div className="flex justify-between items-center">
+      <h2 className="text-xl font-bold">Trayectos</h2>
+
+            <button
+              onClick={guardarTrayecto}
+              disabled={loading}
+              className="btn-primary w-10 h-10 flex items-center justify-center text-lg p-0"
+              title="Guardar trayecto"
+              >
+              💾
+            </button>
+
+    </div>
+
+
+      {/* Formulario para crear un nuevo trayecto */}
       <div className="card space-y-3">
         <h3 className="font-bold text-lg">Nuevo trayecto</h3>
 
+        {/* Campos de origen y destino */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
           <div className="relative">
@@ -182,6 +232,7 @@ export default function TrayectosPage() {
 
         </div>
 
+        {/* Sección para agregar pasajeros */}
         <div className="space-y-2">
           <div className="flex gap-2 items-center mt-2">
 
@@ -201,17 +252,11 @@ export default function TrayectosPage() {
               +
             </button>
 
-            <button
-              onClick={guardarTrayecto}
-              disabled={loading}
-              className="btn-primary w-10 h-10 flex items-center justify-center text-lg p-0"
-              title="Guardar trayecto"
-            >
-              💾
-            </button>
+            
 
           </div>
 
+          {/* Lista de pasajeros agregados */}
           {pasajeros.length > 0 && (
             <ul className="list-disc pl-5">
               {pasajeros.map((p, i) => (
@@ -231,6 +276,7 @@ export default function TrayectosPage() {
         </div>
       </div>
 
+      {/* Tabla de trayectos existentes */}
       <div className="card overflow-x-auto">
         <table className="table text-sm min-w-full">
           <thead>
