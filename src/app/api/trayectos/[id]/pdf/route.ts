@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { NextRequest } from "next/server"
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib"
 import QRCode from "qrcode"
+import { formatFecha, formatSoloFecha, formatSoloHora } from "@/utils/date"
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
@@ -68,11 +69,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     // ---------------------
     page.drawText("DATOS DO CONTRATO", { x: 50, y, size: 12, font: bold })
     y -= 18
-    const fechaHora = trayecto.dateM ? new Date(trayecto.dateM) : new Date()
+    const fechaHora = trayecto.dateM ?? new Date()
     const contratoData = [
       `Contrato Nº: ${trayecto.numero}`,
       `Lugar: ${trayecto.contrato.lugar}`,
-      `Fecha e hora: ${fechaHora.toLocaleDateString()} ${fechaHora.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`,
+      `Fecha e hora: ${formatFecha(fechaHora)}`,
       `Contratante: ${trayecto.contrato.contratante}`,
       `Arrendatario: ${trayecto.contrato.arrendatario}`,
     ]
@@ -84,10 +85,10 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     // ---------------------
     page.drawText("DATOS DA RUTA CONTRATADA", { x: 50, y, size: 12, font: bold })
     y -= 18
-    const fechaRecogida = new Date(trayecto.dateM2 ?? trayecto.hora)
+    const fechaRecogida = trayecto.dateM2 ?? trayecto.hora
     const rutaData = [
-      `Fecha recollida: ${fechaRecogida.toLocaleDateString()}`,
-      `Hora recollida: ${fechaRecogida.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`,
+      `Fecha recollida: ${formatSoloFecha(fechaRecogida)}`,
+      `Hora recollida: ${formatSoloHora(fechaRecogida)}`,
       `Lugar orixen: ${trayecto.origen}`,
       `Lugar destino: ${trayecto.destino}`,
       `Pasaxeiros: ${trayecto.pasajeros.join(", ")}`,
